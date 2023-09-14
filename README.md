@@ -39,5 +39,6 @@ $ npm start
 - GraphQL
 - Expo
 - React Hook Form
+- Zod
 - Zustand
 - Styled components
