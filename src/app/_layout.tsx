@@ -1,6 +1,7 @@
 import { Slot } from 'expo-router';
 import { ApolloClient, InMemoryCache, ApolloProvider, createHttpLink } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
+import { RootSiblingParent } from 'react-native-root-siblings';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const httpLink = createHttpLink({
@@ -25,7 +26,9 @@ const client = new ApolloClient({
 export default function Layout() {
   return (
       <ApolloProvider client={client}>
-        <Slot />
+        <RootSiblingParent>
+          <Slot />
+        </RootSiblingParent>
       </ApolloProvider>
   );
 }

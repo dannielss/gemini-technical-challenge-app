@@ -17,13 +17,19 @@ export const TextInput = styled.TextInput<{ border?: string }>`
 
 export const Button = styled.TouchableOpacity`
     background-color: #1976D2;
-    padding: 8px;
+    height: 40px;
+    justify-content: center;
     border-radius: 4px;
     width: 100%;
     margin-top: 8px;
+    margin-bottom: 16px;
 `;
 
 export const ButtonText = styled.Text`
     color: #fff;
     text-align: center;
+`;
+
+export const LinkText = styled.Text`
+    color: #666;
 `;

@@ -1,27 +1,18 @@
-import { Dimensions } from "react-native";
 import styled from "styled-components/native";
 
 export const Title = styled.Text`
     font-size: 28px;
     font-weight: bold;
+    margin-bottom: 16px;
+    text-align: center;
 `;
 
 export const Container = styled.View`
+    margin-top: 64px;
     flex: 1;
     align-items: center;
-    justify-content: center;
-`;
-
-export const Header = styled.View`
-    margin-top: 64px;
-    align-items: center;
-`;
-
-export const Form = styled.View`
-    display: flex;
-    flex-direction: row;
-    align-items: flex-end;
-    margin: 8px 16px 16px 16px;
+    padding: 0 16px;
+    margin-bottom: 32px;
 `;
 
 export const TextInput = styled.TextInput`
@@ -29,23 +20,24 @@ export const TextInput = styled.TextInput`
     border-radius: 4px;
     height: 50px;
     padding: 0 8px;
-    width: 80%;
+    width: 100%;
+    margin-bottom: 16px;
 `;
 
 export const Button = styled.TouchableOpacity`
     background-color: #1976D2;
     border-radius: 4px;
-    height: 50px;
+    height: 40px;
     justify-content: center;
-    width: 20%;
-    margin-left: 8px;
+    align-items: center;
+    width: 100%;
 `;
 
 export const ButtonText = styled.Text`
     color: #fff;
-    text-align: center;
 `;
 
-export const ActivityIndicatorContainer = styled.View`
+export const Form = styled.View`
+    width: 100%;
     flex: 1;
 `;
