@@ -12,7 +12,7 @@ export const Container = styled.View`
     flex: 1;
     align-items: center;
     padding: 0 16px;
-    margin-bottom: 32px;
+    margin-bottom: 16px;
 `;
 
 export const TextInput = styled.TextInput`

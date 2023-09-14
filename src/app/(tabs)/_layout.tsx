@@ -13,7 +13,7 @@ export default function TabRoutesLayour() {
             />
 
             <Tabs.Screen 
-                name="profile" 
+                name="profile/index" 
                 options={{ 
                     title: 'Profile',
                     tabBarIcon: ({ size, color }) => <MaterialIcons name="person" size={size} color={color }/> 
