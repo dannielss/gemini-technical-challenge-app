@@ -1,3 +1,4 @@
+import { Image } from "expo-image";
 import styled from "styled-components/native";
 
 export const Container = styled.View`
@@ -32,4 +33,12 @@ export const ButtonText = styled.Text`
 
 export const LinkText = styled.Text`
     color: #666;
+`;
+
+export const CustomImage = styled(Image)`
+    width: 100px;
+    height: 100px;
+    padding: 0;
+    resize-mode: contain;
+    margin-bottom: 20px;
 `;

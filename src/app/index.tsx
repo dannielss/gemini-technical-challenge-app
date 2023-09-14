@@ -6,6 +6,7 @@ import { Link, router } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { userStore } from '../store/user';
 import { ActivityIndicator, Text } from 'react-native';
+import { Image } from 'expo-image';
 
 const SIGNIN = gql`
   mutation signIn($email: String!, $password: String!) {
@@ -44,12 +45,13 @@ export default function Login() {
   return (
     <S.Container>
       <StatusBar style="auto" />
+      <S.CustomImage source={require('../images/log_todo.png')} />
       <S.TextInput placeholder='E-mail' value={form.email} onChangeText={(text) => handleChange('email', text)} />
       <S.TextInput placeholder='Password' secureTextEntry={true} border='8px' value={form.password} onChangeText={(text) => handleChange('password', text)} />
       <S.Button disabled={loading} onPress={handleSubmit}>
         {loading ? <ActivityIndicator size={25} color="#FFF" /> : <S.ButtonText>Log In</S.ButtonText>}
       </S.Button>
-      {error?.graphQLErrors[0].extensions.originalError.message && <Text style={{ color: '#fa2626', marginVertical: 8 }}>{error?.message}</Text>}
+      {error && error?.graphQLErrors[0]?.extensions?.originalError?.message && <Text style={{ color: '#fa2626', marginVertical: 8 }}>{error?.message}</Text>}
       <Link href="/register">
         <S.LinkText>Don't have an account? Sign up</S.LinkText>
       </Link>

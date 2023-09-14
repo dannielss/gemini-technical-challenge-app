@@ -1,11 +1,13 @@
-import { ActivityIndicator, Text } from "react-native"
+import { ActivityIndicator, Text, View } from "react-native"
 import { useForm, Controller } from "react-hook-form"
-import * as S from "./styles";
 import { gql, useMutation } from "@apollo/client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { router } from "expo-router";
+import { MaterialIcons} from '@expo/vector-icons';
 import Toast from "react-native-root-toast";
+import * as S from "./styles";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 const validationSchema = z
   .object({
@@ -73,7 +75,14 @@ export default function Register() {
   return (
     <S.Container>
         <S.Form>
-            <S.Title>Register</S.Title>
+            <S.Header>
+                <TouchableOpacity onPress={() => router.back()}>
+                    <MaterialIcons name="arrow-back" size={24} />
+                </TouchableOpacity>
+                <S.TitleContainer> 
+                    <S.Title>Register</S.Title>
+                </S.TitleContainer>
+            </S.Header>
             <Controller
                 control={control}
                 rules={{

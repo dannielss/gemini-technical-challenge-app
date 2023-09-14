@@ -3,8 +3,19 @@ import styled from "styled-components/native";
 export const Title = styled.Text`
     font-size: 28px;
     font-weight: bold;
-    margin-bottom: 16px;
     text-align: center;
+`;
+
+export const Header = styled.View`
+    flex-direction: row;
+    align-items: center;
+    text-align: center;
+    margin-bottom: 16px;
+`;
+
+export const TitleContainer = styled.View`
+    flex: 1;
+    padding-right: 24px;
 `;
 
 export const Container = styled.View`
