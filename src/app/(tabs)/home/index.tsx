@@ -1,5 +1,5 @@
 import { gql, useMutation, useQuery } from '@apollo/client';
-import { ActivityIndicator, FlatList, Keyboard, RefreshControl, Text, View } from 'react-native';
+import { ActivityIndicator, Keyboard } from 'react-native';
 import { userStore } from '../../../store/user';
 import { useState } from 'react';
 import * as S from './styles';

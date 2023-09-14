@@ -1,4 +1,4 @@
-import { ActivityIndicator, Text, View } from "react-native"
+import { ActivityIndicator, Text } from "react-native"
 import { useForm, Controller } from "react-hook-form"
 import { gql, useMutation } from "@apollo/client";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -54,10 +54,10 @@ export default function Register() {
     resolver: zodResolver(validationSchema),
   })
 
-  const [createUser, { loading, client }] = useMutation(CREATE_USER);
+  const [createUser, { loading, error, reset }] = useMutation(CREATE_USER, { errorPolicy: "all" });
 
   const onSubmit = async (data: any) => {
-    await createUser({ variables: {
+    const response = await createUser({ variables: {
         createUserInput: {
             name: data.name,
             email: data.email,
@@ -65,11 +65,13 @@ export default function Register() {
         }
         }});
 
-    Toast.show('Successfully registered', {
-        duration: Toast.durations.SHORT,
-    });
-
-    router.push('/');
+    if(response.data && response.data.createUser.id) {
+        Toast.show('Successfully registered', {
+            duration: Toast.durations.SHORT,
+        });
+    
+        router.push('/');
+    }
   }
 
   return (
@@ -92,13 +94,16 @@ export default function Register() {
                 <S.TextInput
                     placeholder="name"
                     onBlur={onBlur}
-                    onChangeText={onChange}
+                    onChangeText={(text) => {
+                        onChange(text)
+                        reset()
+                    }}
                     value={value}
                 />
                 )}
                 name="name"
             />
-            {errors.name && <Text style={{ color: '#fa2626', marginVertical: 8 }}>{errors.name.message}</Text>}
+            {errors.name && <Text style={{ color: '#fa2626', marginBottom: 16 }}>{errors.name.message}</Text>}
 
             <Controller
                 control={control}
@@ -109,13 +114,16 @@ export default function Register() {
                 <S.TextInput
                     placeholder="email"
                     onBlur={onBlur}
-                    onChangeText={onChange}
+                     onChangeText={(text) => {
+                        onChange(text)
+                        reset()
+                    }}
                     value={value}
                 />
                 )}
                 name="email"
             />
-            {errors.email && <Text style={{ color: '#fa2626', marginVertical: 8 }}>{errors.email.message}</Text>}
+            {errors.email && <Text style={{ color: '#fa2626', marginBottom: 16 }}>{errors.email.message}</Text>}
 
             <Controller
                 control={control}
@@ -126,14 +134,17 @@ export default function Register() {
                 <S.TextInput
                     placeholder="password"
                     onBlur={onBlur}
-                    onChangeText={onChange}
+                     onChangeText={(text) => {
+                        onChange(text)
+                        reset()
+                    }}
                     value={value}
                     secureTextEntry={true}
                 />
                 )}
                 name="password"
             />
-            {errors.password && <Text style={{ color: '#fa2626', marginVertical: 8 }}>{errors.password.message}</Text>}
+            {errors.password && <Text style={{ color: '#fa2626', marginBottom: 16 }}>{errors.password.message}</Text>}
 
             <Controller
                 control={control}
@@ -144,7 +155,10 @@ export default function Register() {
                 <S.TextInput
                     placeholder="confirmPassword"
                     onBlur={onBlur}
-                    onChangeText={onChange}
+                     onChangeText={(text) => {
+                        onChange(text)
+                        reset()
+                    }}
                     value={value}
                     secureTextEntry={true}
                 />
@@ -157,6 +171,7 @@ export default function Register() {
       <S.Button onPress={handleSubmit(onSubmit)} disabled={loading}>
       {loading ? <ActivityIndicator size={25} color="#FFF" /> : <S.ButtonText>Register</S.ButtonText>}
       </S.Button>
+      {error && error?.graphQLErrors[0]?.extensions?.originalError?.message && <Toast duration={Toast.durations.SHORT} style={{ backgroundColor: '#fa2626' }} visible={true} position={Toast.positions.BOTTOM} shadow={false} animation={true} hideOnPress={true}>{error?.graphQLErrors[0]?.extensions?.originalError?.message}</Toast>}
     </S.Container>
   )
 }

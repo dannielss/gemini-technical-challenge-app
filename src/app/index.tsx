@@ -6,7 +6,21 @@ import { Link, router } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { userStore } from '../store/user';
 import { ActivityIndicator, Text } from 'react-native';
-import { Image } from 'expo-image';
+import { z } from 'zod';
+import { Controller, useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+
+const validationSchema = z
+  .object({
+    email: z.string().min(1, { message: "Email is required" }).email({
+      message: "Must be a valid email",
+    }),
+    password: z
+      .string()
+      .min(6, { message: "Password must be at least 6 characters" }),
+  })
+
+type ValidationSchema = z.infer<typeof validationSchema>;
 
 const SIGNIN = gql`
   mutation signIn($email: String!, $password: String!) {
@@ -22,12 +36,23 @@ const SIGNIN = gql`
 `;
 
 export default function Login() {
-  const [signIn, { data, loading, error, reset  }] = useMutation(SIGNIN, { errorPolicy: "all" });
-  const [form, setForm] = useState({ email: 'daniel22@hotmail.com', password: '123' });
+  const [signIn, { loading, error, reset }] = useMutation(SIGNIN, { errorPolicy: "all" });
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<ValidationSchema>({
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+    resolver: zodResolver(validationSchema),
+  })
+  const [form, setForm] = useState({ email: '', password: '' });
   const { setUser } = userStore();
 
-  const handleSubmit = async () => {
-    const response = await signIn({ variables: {email: form.email, password: form.password }})
+  const onSubmit = async (data: { email: string, password: string }) => {
+    const response = await signIn({ variables: {email: data.email, password: data.password }})
     
     if(response.data && response.data.signIn.token) {
       await AsyncStorage.setItem('token', response.data.signIn.token);
@@ -36,19 +61,52 @@ export default function Login() {
     }
   };
 
-  const handleChange = (field: string, value: string) => {
-    setForm({ ...form, [field]: value });
-
-    reset();
-  }
-
   return (
     <S.Container>
       <StatusBar style="auto" />
       <S.CustomImage source={require('../images/log_todo.png')} />
-      <S.TextInput placeholder='E-mail' value={form.email} onChangeText={(text) => handleChange('email', text)} />
-      <S.TextInput placeholder='Password' secureTextEntry={true} border='8px' value={form.password} onChangeText={(text) => handleChange('password', text)} />
-      <S.Button disabled={loading} onPress={handleSubmit}>
+      <S.Form>
+        <Controller
+            control={control}
+            rules={{
+            required: true,
+            }}
+            render={({ field: { onChange, onBlur, value } }) => (
+            <S.TextInput
+                placeholder="Email"
+                onBlur={onBlur}
+                onChangeText={(text) => {
+                    onChange(text)
+                    reset()
+                }}
+                value={value}
+            />
+            )}
+            name="email"
+        />
+        {errors.email && <Text style={{ color: '#fa2626', marginBottom: 16 }}>{errors.email.message}</Text>}
+        <Controller
+            control={control}
+            rules={{
+            required: true,
+            }}
+            render={({ field: { onChange, onBlur, value } }) => (
+            <S.TextInput
+                placeholder="Password"
+                onBlur={onBlur}
+                onChangeText={(text) => {
+                    onChange(text)
+                    reset()
+                }}
+                value={value}
+                secureTextEntry={true}
+            />
+            )}
+            name="password"
+        />
+        {errors.password && <Text style={{ color: '#fa2626', marginBottom: 16 }}>{errors.password.message}</Text>}
+      </S.Form>
+      <S.Button disabled={loading} onPress={handleSubmit(onSubmit)}>
         {loading ? <ActivityIndicator size={25} color="#FFF" /> : <S.ButtonText>Log In</S.ButtonText>}
       </S.Button>
       {error && error?.graphQLErrors[0]?.extensions?.originalError?.message && <Text style={{ color: '#fa2626', marginVertical: 8 }}>{error?.message}</Text>}

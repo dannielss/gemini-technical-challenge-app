@@ -32,7 +32,7 @@ export const TextInput = styled.TextInput`
     height: 50px;
     padding: 0 8px;
     width: 100%;
-    margin-bottom: 16px;
+    margin-bottom: 8px;
 `;
 
 export const Button = styled.TouchableOpacity`

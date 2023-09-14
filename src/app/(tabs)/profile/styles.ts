@@ -42,7 +42,7 @@ export const CustomImage = styled(Image)`
     width: 100px;
     height: 100px;
     padding: 0;
-    resize-mode: contain;
+    content-fit: contain;
     margin-bottom: 8px;
 `;
 

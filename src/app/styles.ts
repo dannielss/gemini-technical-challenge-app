@@ -8,12 +8,13 @@ export const Container = styled.View`
     padding: 0 16px;
 `;
 
-export const TextInput = styled.TextInput<{ border?: string }>`
+export const TextInput = styled.TextInput`
     border: 1px solid #ddd;
     padding: 8px;
     border-radius: 4px;
     width: 100%;
-    margin-top: ${({ border }) => border};
+    margin-top: 8px;
+    margin-bottom: 8px;
 `;
 
 export const Button = styled.TouchableOpacity`
@@ -39,6 +40,10 @@ export const CustomImage = styled(Image)`
     width: 100px;
     height: 100px;
     padding: 0;
-    resize-mode: contain;
+    content-fit: contain;
     margin-bottom: 20px;
+`;
+
+export const Form = styled.View`
+    width: 100%;
 `;
